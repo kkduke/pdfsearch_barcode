@@ -55,8 +55,16 @@ def rename_pdfs_based_on_barcode():
                     new_filename = f"LFSR_{barcode_value}.pdf"
                     new_filepath = os.path.join(new_directory, new_filename)
                     shutil.copy(pdf_path, new_filepath)
+                    
+                # Delete temporary images after use
+                os.remove(image_path)
+                os.remove(cropped_image_path)
+                
             else:
                 no_barcode_files.append(filename)
+                
+                # Copy the PDF file to new directory with its original name if no barcode is found
+                shutil.copy(pdf_path, os.path.join(new_directory, filename))
 
     print("Files where no barcode was found:")
     for filename in no_barcode_files:
